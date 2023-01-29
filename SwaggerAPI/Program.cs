@@ -61,7 +61,6 @@ builder.Services.AddSwaggerGen(opts =>
     opts.AddSecurityDefinition("bearerAuth", securityScheme);
     opts.AddSecurityRequirement(securityRequirement);
 
-
 });
 
 var app = builder.Build();
@@ -74,10 +73,14 @@ if (app.Environment.IsDevelopment())
     {
         opts.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
         opts.RoutePrefix= string.Empty;
+
+        opts.InjectStylesheet("/css/theme-monokai.css");
     });
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseAuthorization();
 
