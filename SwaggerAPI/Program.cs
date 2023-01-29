@@ -29,6 +29,39 @@ builder.Services.AddSwaggerGen(opts =>
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFile));
 
+
+
+
+
+    var securityScheme = new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Description = "JWT auth header info using bearer tokens",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT"
+    };
+
+    var securityRequirement = new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "bearerAuth"
+                }
+            },
+            new string[] {}
+        }
+    };
+
+    opts.AddSecurityDefinition("bearerAuth", securityScheme);
+    opts.AddSecurityRequirement(securityRequirement);
+
+
 });
 
 var app = builder.Build();
